@@ -24,7 +24,28 @@ export class TicketService {
   }
 
   addTicket(ticket: Ticket) {
-    // You need here to update the list of ticket and then update our observable (Subject) with the new list
-    // More info: https://angular.io/tutorial/toh-pt6#the-searchterms-rxjs-subject
+    this.ticketList.push(ticket);
+    this.tickets$.next(this.ticketList);
+  }
+
+  deleteTicket(ticket: Ticket) {
+    console.log('service');
+    this.ticketList = this.ticketList.filter(t => t.title !== ticket.title);
+    this.tickets$.next(this.ticketList);
+  }
+
+  archiveTicket(ticket: Ticket) {
+    for (let i in this.ticketList) {
+      if (this.ticketList[i].title == ticket.title) {
+        if (ticket.archived == false) {
+          this.ticketList[i].archived = true;
+          console.log('archived');
+        }
+      }
+    }
+    this.tickets$.next(this.ticketList);
+    for (let i in this.ticketList) {
+      console.log(this.ticketList[i].archived);
+    }
   }
 }
